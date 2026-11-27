@@ -1,7 +1,17 @@
-const CACHE_NAME = 'josour-gsoury7-v3';
+const CACHE_NAME = 'josour-gsoury7-v4';
+const APP_SHELL = [
+  './',
+  './index.html',
+  './haram-live.html',
+  './manifest.json'
+];
 
 self.addEventListener('install', (event) => {
-  self.skipWaiting();
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then((cache) => cache.addAll(APP_SHELL))
+      .then(() => self.skipWaiting())
+  );
 });
 
 self.addEventListener('activate', (event) => {

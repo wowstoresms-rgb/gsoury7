@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f4229" />
+  <title>البث المباشر للحرم المكي | منصة جسور</title>
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Cairo', 'sans-serif'] },
+          colors: {
+            josour: {
+              dark: '#0f4229',
+              primary: '#165b38',
+              emerald: '#1d7548',
+              gold: '#c88a2e',
+              sand: '#f6f8f7'
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: #091e14;
+      color: #ffffff;
+      overflow-x: hidden;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- شريط علوي نظيف بدون تداخل -->
+  <header class="sticky top-0 z-40 bg-[#0d3521]/95 backdrop-blur-md border-b border-white/10">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3 min-w-0">
+        <a href="./index.html" class="shrink-0 inline-flex items-center gap-1.5 bg-white/10 hover:bg-white/20 text-white px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition">
+          <span>→</span>
+          <span>العودة للمنصة</span>
+        </a>
+        <div class="flex items-center gap-2 bg-white px-3 py-1 rounded-xl shrink-0">
+          <svg class="h-7 w-auto" viewBox="0 0 210 68" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="شعار جسور">
+            <path d="M162 24H189C193 24 196 27 196 31V39C196 43 193 46 189 46H155V37H185V33H162V24Z" fill="#165b38"/>
+            <circle cx="177" cy="54" r="4.2" fill="#c88a2e"/>
+            <path d="M112 24H121V37H128V24H137V37H144V24H153V39C153 43 150 46 146 46H112V37Z" fill="#165b38"/>
+            <path d="M84 24H103C107 24 110 27 110 31V44C110 52 104 57 95 57H83V49H94C99 49 101 47 101 43V42H84C80 42 77 39 77 35V31C77 27 80 24 84 24ZM86 34H101V31H86V34Z" fill="#165b38"/>
+            <path d="M62 26H71V44C71 52 65 57 56 57H47V49H55C60 49 62 47 62 43V26Z" fill="#165b38"/>
+            <path d="M47 17C85 6 145 6 195 17" stroke="#c88a2e" stroke-width="3.5" stroke-linecap="round"/>
+            <circle cx="34" cy="36" r="5" fill="#1d7548"/>
+            <circle cx="21" cy="36" r="3.2" fill="#c88a2e"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 text-xs font-extrabold">
+        <span class="inline-flex items-center gap-1.5 bg-red-500/20 border border-red-400/40 text-red-200 px-3 py-1.5 rounded-full">
+          <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+          <span>بث مباشر 24/7</span>
+        </span>
+        <span id="makkahClockBadge" class="bg-white/10 border border-white/15 text-amber-200 px-3 py-1.5 rounded-full">
+          توقيت مكة المكرمة
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- المحتوى الرئيسي -->
+  <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-6 space-y-5">
+
+    <!-- العنوان وأزرار الجودة -->
+    <section class="bg-gradient-to-l from-[#0f4229] to-[#165b38] rounded-3xl p-5 sm:p-6 border border-white/15 shadow-xl">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div class="min-w-0">
+          <h1 class="text-xl sm:text-2xl font-black text-white leading-snug">
+            البث المباشر من المسجد الحرام — مكة المكرمة
+          </h1>
+          <p id="haramLiveHijri" class="text-xs sm:text-sm text-emerald-100 mt-1">
+            نقل حي متواصل للكعبة المشرفة وصلوات الحرم مع تبديل فوري للمصادر والجودات
+          </p>
+        </div>
+
+        <!-- اختيار الجودة -->
+        <div class="flex flex-wrap items-center gap-1.5 bg-black/30 p-1.5 rounded-2xl shrink-0">
+          <button onclick="setQuality('auto', 'تلقائي HD', this)" class="q-btn active bg-amber-400 text-josour-dark px-3 py-1.5 rounded-xl text-xs font-black transition">
+            تلقائي
+          </button>
+          <button onclick="setQuality('hd1080', '1080p HD', this)" class="q-btn text-white hover:bg-white/15 px-3 py-1.5 rounded-xl text-xs font-bold transition">
+            1080p فائقة
+          </button>
+          <button onclick="setQuality('hd720', '720p HD', this)" class="q-btn text-white hover:bg-white/15 px-3 py-1.5 rounded-xl text-xs font-bold transition">
+            720p عالية
+          </button>
+          <button onclick="setQuality('large', '480p', this)" class="q-btn text-white hover:bg-white/15 px-3 py-1.5 rounded-xl text-xs font-bold transition">
+            480p متوسطة
+          </button>
+          <button onclick="setQuality('small', '240p', this)" class="q-btn text-white hover:bg-white/15 px-3 py-1.5 rounded-xl text-xs font-bold transition">
+            240p توفير
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- مشغل البث المباشر -->
+    <section class="bg-[#06150e] rounded-3xl p-3 sm:p-5 border border-white/10 shadow-2xl">
+      <div class="relative w-full aspect-video rounded-2xl overflow-hidden bg-black border border-white/10">
+        <iframe
+          id="haramPlayerFrame"
+          class="w-full h-full"
+          src="https://www.youtube.com/embed/live_stream?channel=UCos52azQNBgW63_9uDJoPDA&autoplay=1&mute=0&rel=0&modestbranding=1"
+          title="البث المباشر للحرم المكي - قناة القرآن الكريم الرسمية"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen>
+        </iframe>
+      </div>
+
+      <!-- مصادر البث المتعددة -->
+      <div class="mt-4 flex flex-col md:flex-row md:items-center justify-between gap-3 bg-white/5 border border-white/10 rounded-2xl p-4">
+        <div class="flex flex-wrap items-center gap-2 text-xs">
+          <span class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 font-extrabold border border-emerald-500/30">
+            الجودة: <span id="activeQualityText">تلقائي HD</span>
+          </span>
+          <span class="px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-200 font-extrabold border border-amber-500/30">
+            المصدر: <span id="activeSourceText">قناة القرآن الكريم الرسمية (مباشر)</span>
+          </span>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="switchSource(0, this)" class="src-btn bg-josour-primary text-white border border-emerald-400/50 px-3.5 py-2 rounded-xl text-xs font-extrabold transition">
+            المصدر 1: القناة الرسمية (تلقائي)
+          </button>
+          <button onclick="switchSource(1, this)" class="src-btn bg-white/10 hover:bg-white/20 text-white px-3.5 py-2 rounded-xl text-xs font-bold transition">
+            المصدر 2: البث الاحتياطي (مكة)
+          </button>
+          <button onclick="switchSource(2, this)" class="src-btn bg-white/10 hover:bg-white/20 text-white px-3.5 py-2 rounded-xl text-xs font-bold transition">
+            المصدر 3: بث بديل (HD)
+          </button>
+        </div>
+      </div>
+
+      <!-- روابط خارجية موثوقة في حال حظر التضمين على الشبكة -->
+      <div class="mt-3 flex flex-wrap items-center justify-between gap-3 bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-xs">
+        <span class="text-slate-300 font-bold">هل واجهت مشكلة في تشغيل المشغل داخل المتصفح؟ يمكنك الفتح مباشرة عبر المصادر الرسمية:</span>
+        <div class="flex flex-wrap items-center gap-2">
+          <a href="https://aloula.sba.sa/live/quran" target="_blank" rel="noopener noreferrer" class="bg-amber-400 hover:bg-amber-300 text-josour-dark px-3 py-1.5 rounded-xl font-black transition">
+            منصة الأولى السعودية الرسمية ↗
+          </a>
+          <a href="https://www.youtube.com/SaudiQuranTv/streams" target="_blank" rel="noopener noreferrer" class="bg-white/15 hover:bg-white/25 text-white px-3 py-1.5 rounded-xl font-extrabold transition">
+            يوتيوب قناة القرآن الكريم ↗
+          </a>
+          <a href="https://makkahlive.net/" target="_blank" rel="noopener noreferrer" class="bg-white/15 hover:bg-white/25 text-white px-3 py-1.5 rounded-xl font-extrabold transition">
+            بث مكة لايف الاحتياطي ↗
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- مواقيت الصلاة وطقس مكة المكرمة -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="bg-[#0f4229]/70 border border-white/10 rounded-2xl p-4 flex flex-col justify-between">
+        <div class="text-xs text-emerald-200 font-bold">طقس المسجد الحرام الآن</div>
+        <div class="flex items-baseline gap-3 mt-2">
+          <span id="liveMakkahTemp" class="text-3xl font-black text-amber-300">27°C</span>
+          <span id="liveMakkahHumidity" class="text-xs text-emerald-100 font-bold">رطوبة 42%</span>
+        </div>
+        <div class="text-xs text-white/80 mt-1">أجواء مكة المكرمة المباشرة</div>
+      </div>
+
+      <div class="md:col-span-2 bg-[#0f4229]/70 border border-white/10 rounded-2xl p-4">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-xs font-extrabold text-amber-200">مواقيت الصلاة اليوم في مكة المكرمة</span>
+          <span id="liveNextPrayer" class="text-xs font-black bg-amber-400 text-josour-dark px-2.5 py-1 rounded-lg">الصلاة القادمة</span>
+        </div>
+        <div class="grid grid-cols-5 gap-2 text-center text-xs">
+          <div class="bg-white/10 rounded-xl py-2 px-1">
+            <div class="text-emerald-200 font-bold">الفجر</div>
+            <div id="lpFajr" class="font-black text-white mt-1">05:18</div>
+          </div>
+          <div class="bg-white/10 rounded-xl py-2 px-1">
+            <div class="text-emerald-200 font-bold">الظهر</div>
+            <div id="lpDhuhr" class="font-black text-white mt-1">12:08</div>
+          </div>
+          <div class="bg-white/10 rounded-xl py-2 px-1">
+            <div class="text-emerald-200 font-bold">العصر</div>
+            <div id="lpAsr" class="font-black text-white mt-1">15:16</div>
+          </div>
+          <div class="bg-white/10 rounded-xl py-2 px-1">
+            <div class="text-emerald-200 font-bold">المغرب</div>
+            <div id="lpMaghrib" class="font-black text-white mt-1">17:37</div>
+          </div>
+          <div class="bg-white/10 rounded-xl py-2 px-1">
+            <div class="text-emerald-200 font-bold">العشاء</div>
+            <div id="lpIsha" class="font-black text-white mt-1">19:07</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-white/10 py-4 px-4 text-center text-xs text-emerald-200/80 font-bold">
+    منصة جسور المباشرة • البث الحي للحرم المكي الشريف
+  </footer>
+
+  <script>
+    const STREAM_SOURCES = [
+      {
+        name: 'قناة القرآن الكريم الرسمية (مباشر)',
+        url: 'https://www.youtube.com/embed/live_stream?channel=UCos52azQNBgW63_9uDJoPDA'
+      },
+      {
+        name: 'البث الاحتياطي الأول (الحرم المكي)',
+        url: 'https://www.youtube.com/embed/Qvcimc6QQY8'
+      },
+      {
+        name: 'البث الاحتياطي الثاني (مكة مباشر)',
+        url: 'https://www.youtube.com/embed/5fAVDqiqzys'
+      }
+    ];
+
+    let activeSourceIndex = 0;
+    let activeQualityCode = 'auto';
+
+    function reloadPlayer() {
+      const frame = document.getElementById('haramPlayerFrame');
+      const src = STREAM_SOURCES[activeSourceIndex];
+      const sep = src.url.includes('?') ? '&' : '?';
+      const qParam = activeQualityCode === 'auto' ? '' : `&vq=${activeQualityCode}`;
+      frame.src = `${src.url}${sep}autoplay=1&mute=0&rel=0&modestbranding=1${qParam}`;
+      document.getElementById('activeSourceText').textContent = src.name;
+    }
+
+    function setQuality(code, label, btn) {
+      activeQualityCode = code;
+      document.getElementById('activeQualityText').textContent = label;
+      document.querySelectorAll('.q-btn').forEach(b => {
+        b.classList.remove('bg-amber-400', 'text-josour-dark', 'font-black');
+        b.classList.add('text-white', 'font-bold');
+      });
+      btn.classList.add('bg-amber-400', 'text-josour-dark', 'font-black');
+      btn.classList.remove('text-white', 'font-bold');
+      reloadPlayer();
+    }
+
+    function switchSource(idx, btn) {
+      activeSourceIndex = idx;
+      document.querySelectorAll('.src-btn').forEach(b => {
+        b.classList.remove('bg-josour-primary', 'border', 'border-emerald-400/50', 'font-extrabold');
+        b.classList.add('bg-white/10', 'font-bold');
+      });
+      btn.classList.add('bg-josour-primary', 'border', 'border-emerald-400/50', 'font-extrabold');
+      btn.classList.remove('bg-white/10', 'font-bold');
+      reloadPlayer();
+    }
+
+    async function fetchJsonSilent(url, ms = 4500) {
+      const ctrl = new AbortController();
+      const id = setTimeout(() => ctrl.abort(), ms);
+      try {
+        const res = await fetch(url, { signal: ctrl.signal });
+        clearTimeout(id);
+        if (!res.ok) throw new Error('bad status');
+        return await res.json();
+      } catch (e) {
+        clearTimeout(id);
+        throw e;
+      }
+    }
+
+    async function syncMakkahInfo() {
+      // 1. مواقيت الصلاة مع تبديل صامت بين المصادر
+      const prayerEndpoints = [
+        'https://api.aladhan.com/v1/timingsByCity?city=Makkah&country=Saudi%20Arabia&method=4',
+        'https://api.aladhan.com/v1/timings?latitude=21.4225&longitude=39.8262&method=4',
+        'https://api.aladhan.com/v1/timingsByAddress?address=Masjid+al-Haram,Makkah&method=4'
+      ];
+      for (const url of prayerEndpoints) {
+        try {
+          const data = await fetchJsonSilent(url);
+          if (data && data.data && data.data.timings) {
+            const t = data.data.timings;
+            document.getElementById('lpFajr').textContent = t.Fajr.slice(0, 5);
+            document.getElementById('lpDhuhr').textContent = t.Dhuhr.slice(0, 5);
+            document.getElementById('lpAsr').textContent = t.Asr.slice(0, 5);
+            document.getElementById('lpMaghrib').textContent = t.Maghrib.slice(0, 5);
+            document.getElementById('lpIsha').textContent = t.Isha.slice(0, 5);
+            if (data.data.date && data.data.date.hijri) {
+              const h = data.data.date.hijri;
+              document.getElementById('haramLiveHijri').textContent = `${h.day} ${h.month.ar} ${h.year} هـ • نقل حي متواصل من المسجد الحرام`;
+            }
+            break;
+          }
+        } catch (e) {}
+      }
+
+      // 2. طقس مكة مع تبديل صامت
+      const weatherEndpoints = [
+        'https://api.open-meteo.com/v1/forecast?latitude=21.4225&longitude=39.8262&current=temperature_2m,relative_humidity_2m',
+        'https://wttr.in/Mecca?format=j1'
+      ];
+      for (const url of weatherEndpoints) {
+        try {
+          const w = await fetchJsonSilent(url);
+          if (w && w.current && w.current.temperature_2m !== undefined) {
+            document.getElementById('liveMakkahTemp').textContent = `${Math.round(w.current.temperature_2m)}°C`;
+            document.getElementById('liveMakkahHumidity').textContent = `رطوبة ${Math.round(w.current.relative_humidity_2m || 40)}%`;
+            break;
+          } else if (w && w.current_condition && w.current_condition[0]) {
+            const c = w.current_condition[0];
+            document.getElementById('liveMakkahTemp').textContent = `${Math.round(c.temp_C)}°C`;
+            document.getElementById('liveMakkahHumidity').textContent = `رطوبة ${Math.round(c.humidity)}%`;
+            break;
+          }
+        } catch (e) {}
+      }
+    }
+
+    function updateMakkahClock() {
+      const nowUtc = new Date(Date.now() + new Date().getTimezoneOffset() * 60000);
+      const makkah = new Date(nowUtc.getTime() + 3 * 3600000);
+      const hh = String(makkah.getHours()).padStart(2, '0');
+      const mm = String(makkah.getMinutes()).padStart(2, '0');
+      document.getElementById('makkahClockBadge').textContent = `مكة ${hh}:${mm}`;
+
+      const prayers = [
+        { name: 'الفجر', time: document.getElementById('lpFajr').textContent },
+        { name: 'الظهر', time: document.getElementById('lpDhuhr').textContent },
+        { name: 'العصر', time: document.getElementById('lpAsr').textContent },
+        { name: 'المغرب', time: document.getElementById('lpMaghrib').textContent },
+        { name: 'العشاء', time: document.getElementById('lpIsha').textContent }
+      ];
+      const curM = makkah.getHours() * 60 + makkah.getMinutes();
+      let next = prayers[0], diff = 0;
+      for (const p of prayers) {
+        const [ph, pm] = p.time.split(':').map(Number);
+        const tot = ph * 60 + pm;
+        if (tot > curM) { next = p; diff = tot - curM; break; }
+      }
+      if (diff === 0) {
+        const [ph, pm] = prayers[0].time.split(':').map(Number);
+        diff = (1440 - curM) + (ph * 60 + pm);
+      }
+      document.getElementById('liveNextPrayer').textContent = `القادمة: ${next.name} (${Math.floor(diff/60)}س ${diff%60}د)`;
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      syncMakkahInfo();
+      updateMakkahClock();
+      setInterval(updateMakkahClock, 15000);
+    });
+  </script>
+</body>
+</html>

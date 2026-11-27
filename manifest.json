@@ -1,8 +1,8 @@
 {
   "name": "منصة جسور المباشرة | Josour Live",
   "short_name": "جسور",
-  "description": "منصة جسور المباشرة للاقتصاد والطاقة والطقس.",
-  "start_url": "./",
+  "description": "منصة جسور المباشرة للاقتصاد والطاقة والطقس والحرم المكي بمقاس 9:16.",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
