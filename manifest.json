@@ -1,0 +1,13 @@
+{
+  "name": "منصة جسور المباشرة | Josour Live",
+  "short_name": "جسور",
+  "description": "منصة جسور المباشرة للاقتصاد والطاقة والطقس.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f3f6f4",
+  "theme_color": "#165b38",
+  "lang": "ar",
+  "dir": "rtl"
+}
